@@ -102,7 +102,7 @@ backup_exit=$?
 
 #
 # The db dump file is removed in this step as it it no longer needed. It has been included
-# in the ardhive. It is removed to clean up the folder for future backups.
+# in the archive. It is removed to clean up the folder for future backups.
 #
 info "Remove the db backup file"
 rm  ${dbdumpdir}/*
