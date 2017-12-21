@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Setting this, so the repo does not need to be given on the commandline:
-export BORG_REPO=/path-to-your-archive
+export BORG_REPO=/path-to-your-repo
 
 # Setting this, so you won't be asked for your repository passphrase:
 #export BORG_PASSPHRASE='XYZl0ngandsecurepa_55_phrasea&&123'
