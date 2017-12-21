@@ -69,7 +69,7 @@ echo
 
 
 #
-# Backup DB
+# Backup DB. The db is dumped to a temp file folder. Then removed later.
 #
 echo "Backup Nextcloud database..."
 mysqldump --single-transaction -h localhost -u "${dbUser}" -p"${dbPassword}" "${nextcloudDatabase}" > "${dbdumpdir}/${dbdumpfilename}"
@@ -100,6 +100,10 @@ borg create                         \
 
 backup_exit=$?
 
+#
+# The db dump file is removed in this step as it it no longer needed. It has been included
+# in the ardhive. It is removed to clean up the folder for future backups.
+#
 info "Remove the db backup file"
 rm  ${dbdumpdir}/*
 echo "Done"
