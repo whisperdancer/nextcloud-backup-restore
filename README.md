@@ -35,6 +35,7 @@ To restore:
 3. List the contents of the selected archive to retrieve the name of the db dump file: sudo borg list --short /path-to-repo::'<archive-name from step 2>' The db dump file will be the last file listed. When you run this command, it will display all the files contained within the archive so depending on how many files it may take a while to run. The last 2 lines are the ones of interest and will look something like this:
 
 home/<user>/dbdump
+  
 home/<user>/dbdump/hostname-ncdb.sql-2017-10-11 01:00:01
 
 You only want to copy 'hostname-ncdb.sql-2017-11-21 01:00:01' which is the name of the db dump file. The path is set in a variable in the ncresotre.sh script
