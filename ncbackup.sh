@@ -69,7 +69,7 @@ echo
 
 
 #
-# Backup DB. The db is dumped to a temp file folder. Then removed later.
+# Backup DB. The db is dumped to a temp file folder. It will be picked up by the archive. Then removed later.
 #
 echo "Backup Nextcloud database..."
 mysqldump --single-transaction -h localhost -u "${dbUser}" -p"${dbPassword}" "${nextcloudDatabase}" > "${dbdumpdir}/${dbdumpfilename}"
