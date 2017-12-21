@@ -1,26 +1,19 @@
 # nextcloud-backup-restore
-Borg backup nextcloud backup and restore scripts
+Nextcloud backup and restore scripts using BorgBackup (short: Borg) Borg is a deduplicating backup program. 
 
 Scripts to automate backup and restore of Nextcloud 12.x 
-
-These scripts have been tested and work very well. I've been using them in my production environment for some time with no issues. I highly enrouage the backup script be scheduled via a cron job under the root user. sudo crontab -u root -e
-
-The script can send a system generated email with the details of the backup. For this feature, you will need to setup a MTA on your device and a mail utility to send the mail. It is an optional, but highly recommended feature. It is commented out by default.
+Each individual archive will contain the nextcloud config folder, nextcloud theme folder, nextcloud data folder and the db dump. As such, an archive contains a snapshot in time and can be used to restore via the included ncrestore.sh script.
 
 Credit: https://github.com/DecaTec/Nextcloud-Backup-Restore
-
 Credit: https://borgbackup.readthedocs.io/en/stable/quickstart.html#automating-backups
-
 Credit: https://docs.nextcloud.com/server/12/admin_manual/maintenance/restore.html
-
 Credit: https://docs.nextcloud.com/server/12/admin_manual/maintenance/backup.html
-
 Credit: https://docs.nextcloud.com/server/12/admin_manual/maintenance/restore.html
+Dependency: Install Borg Backup http://borgbackup.readthedocs.io/en/stable/quickstart.html
 
-These scripts require the installation of borg backup to function.
-
-First, enter your archive and change the variables to your environment before running the scripts. 
-See borg prune to adjust how many archives you want to retain.
+To use the scripts:
+Before running the scripts, enter your archive location at the top of the script and change the Variables to suit your environment.
+See borg prune documentation to learn how to adjust the number of archives to retain.
 
 To backup:
 1. copy the 2 scripts to a folder
@@ -28,11 +21,11 @@ To backup:
 3. Run the backup: sudo bash ./ncbackup.sh
 
 To restore:
-1. Get the archive name: sudo borg list /path-to-archive
-2. Copy the archive name you want to restore
-3. List the contents of the archive to get the name of the db dump file: sudo borg list /path-to-archive::'<archive-name from step 2>' The db dump file will be the last file listed
-4. Copy the db dump file name
+1. List the Borg archives to retrieve the name of the archive you want to restore: sudo borg list /path-to-archive
+2. Copy the archive name you want to restore and paste to notepad
+3. List the contents of the archive to retrieve the name of the db dump file: sudo borg list --short /path-to-archive::'<archive-name from step 2>' The db dump file will be the last file listed
+4. Copy the db dump file name to notepad
 5. Go to the folder which contains the scripts
 6. Run restore: sudo bash ./ncrestore.sh -a '<archive-name-from-step 2>' -d '<db-dump-file-name-from-step 4>'
-7. If the restore completes without errors, run the permissions.sh script which can be found here: https://docs.nextcloud.com/server/9/admin_manual/installation/installation_wizard.html#strong-perms-label
+7. If the restore completes without errors, run the set strong permissions script which can be found here: https://docs.nextcloud.com/server/9/admin_manual/installation/installation_wizard.html#strong-perms-label
 
