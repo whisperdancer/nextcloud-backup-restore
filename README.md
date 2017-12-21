@@ -5,10 +5,15 @@ Scripts to automate backup and restore of Nextcloud 12.x
 Each individual archive will contain the nextcloud config folder, nextcloud theme folder, nextcloud data folder and the db dump. As such, an archive contains a snapshot in time and can be used to restore via the included ncrestore.sh script.
 
 Credit: https://github.com/DecaTec/Nextcloud-Backup-Restore
+
 Credit: https://borgbackup.readthedocs.io/en/stable/quickstart.html#automating-backups
+
 Credit: https://docs.nextcloud.com/server/12/admin_manual/maintenance/restore.html
+
 Credit: https://docs.nextcloud.com/server/12/admin_manual/maintenance/backup.html
+
 Credit: https://docs.nextcloud.com/server/12/admin_manual/maintenance/restore.html
+
 Dependency: Install Borg Backup http://borgbackup.readthedocs.io/en/stable/quickstart.html
 
 To use the scripts:
