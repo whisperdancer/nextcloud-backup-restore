@@ -12,8 +12,6 @@ Credit: https://docs.nextcloud.com/server/12/admin_manual/maintenance/restore.ht
 
 Credit: https://docs.nextcloud.com/server/12/admin_manual/maintenance/backup.html
 
-Credit: https://docs.nextcloud.com/server/12/admin_manual/maintenance/restore.html
-
 Dependency: Install Borg Backup http://borgbackup.readthedocs.io/en/stable/quickstart.html
 
 To use the scripts:
