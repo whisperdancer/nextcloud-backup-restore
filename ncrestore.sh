@@ -2,7 +2,7 @@
 
 #
 # Bash script for restoring backups of Nextcloud.
-# Usage: ./ncrestore.sh -a '<borg archive to restore>'' -d '<database dump file>'
+# Usage: ./ncrestore.sh -a '<borg archive to restore>' -d '<database dump file>'
 # 
 
 # Setting this, so the repo does not need to be given on the commandline:
