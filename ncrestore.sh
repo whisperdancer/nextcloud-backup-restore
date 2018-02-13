@@ -62,8 +62,8 @@ fi
 # Variables
 # nextcloudFileDir = the folder of your nextcloud installation. This must match the path in the ncbackup.sh script
 nextcloudFileDir="/var/www/nextcloud"
-nextcloudDataDir="/var/nextcloud/data"
-# dbdumpdir = the temp folder for db dumps. This must match the path used in ncbackup.sh
+nextcloudDataDir="/var/nc_data"
+# dbdumpdir = the temp folder for db dumps. *** This must match the path used in ncbackup.sh ***
 dbdumpdir="/home/pi/dbdump"
 dbUser="nextcloud"
 dbPassword="nextcloud"
