@@ -15,6 +15,13 @@ trap 'echo $( date ) Backup interrupted >&2; exit 2' INT TERM
 # Function for error messages
 errorecho() { cat <<< "$@" 1>&2; }
 
+#Bail if borg is already running, maybe previous run didn't finish
+if pidof -x borg >/dev/null; then
+    echo "Backup already running"
+    mail -s "Nextcloud Backup. Borg already running." youremail@yourdomain < /home/pi/scripts/backup.txt
+    exit
+fi
+
 #
 # Check for root
 #
@@ -29,7 +36,7 @@ fi
 #
 # nextcloudFileDir = the folder of your nextcloud installation
 nextcloudFileDir="/var/www/nextcloud"
-nextcloudDataDir="/var/nextcloud/data"
+nextcloudDataDir="/var/nc_data"
 # dbdumpdir = the temp folder for db dumps
 dbdumpdir="/home/pi/dbdump"
 # dbdumpfilename = the name of the db dump file
@@ -41,13 +48,22 @@ dbdumpfilename=$(hostname)-nextcloud-db.sql-$(date +"%Y-%m-%d %H:%M:%S")
 dbUser="nextcloud"
 dbPassword="nextcloud"
 nextcloudDatabase="nextcloud"
+
+# exclude files and folders. You can tweak these and/or add more. These are just the vars. They vars are then appended to borg create
+exclude_updater="'$nextcloudDataDir/updater-*'"
+exclude_updater_hidden="'$nextcloudDataDir/updater-*/.*'"
+
 #
 # webserver vars
 #
 webserverUser="www-data"
 webserverServiceName="apache2"
 
-info "Starting backup"
+info "Starting backup..."
+
+echo "Showing the excluded files and folders..."
+echo $exclude_updater
+echo $exclude_updater_hidden
 
 #
 # Set maintenance mode
@@ -79,8 +95,9 @@ ls -l ${dbdumpdir}
 echo "Done"
 echo
 
-# Backup the 4 mandatory nextcloud directories into an archive named after
+# Backup the nextlcoud directories and dbdump into an archive named after
 # the machine this script is currently running on:
+echo "Backup nextcloud files..."
 
 borg create                         \
     --verbose                       \
@@ -96,7 +113,9 @@ borg create                         \
     $dbdumpdir                      \
     --exclude-caches                \
     --exclude '*.log'               \
-    --exclude '*.log.*'
+    --exclude '*.log.*'             \
+    --exclude $exclude_updater      \
+    --exclude $exclude_updater_hidden \
 
 backup_exit=$?
 
@@ -109,20 +128,15 @@ rm  ${dbdumpdir}/*
 echo "Done"
 
 info "Pruning repository"
-
-# Use the `prune` subcommand to maintain 5 daily, 4 weekly and 6 monthly
-# archives of THIS machine. The '{hostname}-' prefix is very important to
-# limit prune's operation to this machine's archives and not apply to
-# other machines' archives also:
-
+echo "Pruning repository. Daily 5, Weekly 2, Monthly 1". Note, you can change these values to your liking
 borg prune                          \
     --list                          \
     -v                              \
     --prefix '{hostname}-'          \
     --show-rc                       \
-    --keep-daily    7               \
-    --keep-weekly   4               \
-    --keep-monthly  6               \
+    --keep-daily=5                  \
+    --keep-weekly=2                 \
+    --keep-monthly=1                \
 
 prune_exit=$?
 
@@ -160,7 +174,8 @@ then
 fi
 
 #
-#send email. Uncomment the below line to send an email. To send mail, setup your cron script
+# send email. Uncomment the below line to send an email. This requires you first setup a MTA
+# To send mail, setup your cron script
 # like this: 55 23 * * * /root/backup.sh > /home/<user>/backup.txt 2>&1
 #
 # mail -s "Nextcloud Backup" youremail@yourdomain.com < /home/<user>/backup.txt
