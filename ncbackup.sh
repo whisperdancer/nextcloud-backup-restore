@@ -92,6 +92,9 @@ mysqldump --single-transaction -h localhost -u "${dbUser}" -p"${dbPassword}" "${
 echo "mysql dump successful. Dump folder ${dbdumpdir}"
 echo "Listing dump file..."
 ls -l ${dbdumpdir}
+echo
+echo "Database backup size: $(stat --printf='%s' ${dbdumpdir}/${dbdumpfilename} | numfmt --to=iec)"
+echo
 echo "Done"
 echo
 
