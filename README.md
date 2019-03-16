@@ -26,24 +26,13 @@ To backup:
 3. Run the backup: sudo bash ./ncbackup.sh
 
 To restore:
+
 1. List the Borg archives to retrieve the name of the archive you want to restore: sudo borg list /path-to-repo
+2. Extract the database into working folder. sudo borg extract /path/to-archive::'archive name' /home/work Do a ls-l to get db name.
+3. Change to scripts folder i.e. cd scripts/backup
+4. Run restore: sudo bash ./ncrestore.sh -a '<archive-name-from-step 1>' -d '<db-dump-file-name-from-step 2>' Ensure you use single quotes around the parameter names
 
-2. Copy the archive name you want to restore and paste to notepad
-
-3. List the contents of the selected archive to retrieve the name of the db dump file: sudo borg list --short /path-to-repo::'<archive-name from step 2>' The db dump file will be the last file listed. When you run this command, it will display all the files contained within the archive so depending on how many files it may take a while to run. The last 2 lines are the ones of interest and will look something like this:
-
-home/<user>/dbdump
-  
-home/<user>/dbdump/hostname-ncdb.sql-2017-10-11 01:00:01
-
-You only want to copy 'hostname-ncdb.sql-2017-11-21 01:00:01' which is the name of the db dump file. The path is set in a variable in the ncresotre.sh script
-(Note, I beleive there is a way to tweak the output of borg list command to only display files included in the path of the db dump file, but I haven't figured out how to do this. This would be faster as it would only list the one file name needed rather than displaying all the files in the archive. If anyone knows how to do this, please show me)
-
-4. Copy the db dump file name to notepad
-
-5. Go to the folder which contains the scripts. i.e. scripts/backup
-
-6. Run restore: sudo bash ./ncrestore.sh -a '<archive-name-from-step 2>' -d '<db-dump-file-name-from-step 4>' Ensure you use single quotes around the parameter names
+Note, I assume you will be restoring into a new nextcloud install. When you create the new nextcloud install, ensure you use the same db password as the password to the db you're restoring.
 
 7. If the restore completes without errors, run the set strong permissions script which can be found here: https://docs.nextcloud.com/server/9/admin_manual/installation/installation_wizard.html#strong-perms-label
 
