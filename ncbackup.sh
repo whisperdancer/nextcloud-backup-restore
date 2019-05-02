@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Setting this, so the repo does not need to be given on the commandline:
 export BORG_REPO=/path-to-your-repo
